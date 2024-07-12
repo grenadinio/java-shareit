@@ -5,13 +5,14 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryItemRepository implements ItemRepository {
-    private final HashMap<Long, Item> items = new HashMap<>();
+    private final Map<Long, Item> items = new HashMap<>();
     private final AtomicLong id = new AtomicLong(0);
 
     @Override
