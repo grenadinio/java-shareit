@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.Instant;
@@ -16,6 +17,7 @@ import java.time.Instant;
 @Data
 @Entity
 @Table(name = "requests")
+@ToString(exclude = "requester")
 public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

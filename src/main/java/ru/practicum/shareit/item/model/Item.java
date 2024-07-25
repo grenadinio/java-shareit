@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
@@ -20,6 +21,7 @@ import ru.practicum.shareit.user.model.User;
 @NoArgsConstructor
 @Entity
 @Table(name = "items")
+@ToString(exclude = {"owner", "request"})
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

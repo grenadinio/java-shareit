@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import ru.practicum.shareit.booking.BookingStatus;
 import ru.practicum.shareit.exception.BadDateException;
 import ru.practicum.shareit.item.model.Item;
@@ -29,6 +30,7 @@ import java.time.ZoneId;
 @Table(name = "bookings")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"item", "booker"})
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

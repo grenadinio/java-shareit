@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
 @Table(name = "comments")
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"item", "author"})
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
