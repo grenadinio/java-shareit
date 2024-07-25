@@ -20,7 +20,7 @@ import java.util.List;
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 public class BookingController {
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
     @GetMapping("/{id}")
     public Booking getById(@PathVariable Long id, @RequestHeader("X-Sharer-User-Id") Long userId) {
