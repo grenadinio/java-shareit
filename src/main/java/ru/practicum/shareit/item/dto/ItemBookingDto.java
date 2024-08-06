@@ -1,23 +1,22 @@
 package ru.practicum.shareit.item.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.ToString;
+import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.request.model.ItemRequest;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-@ToString(exclude = "itemRequest")
-public class ItemDto {
+public class ItemBookingDto {
     private Long id;
-    @NotBlank
     private String name;
-    @NotBlank
     private String description;
-    @NotNull
     private Boolean available;
     private ItemRequest itemRequest;
-
+    private BookingDto lastBooking;
+    private BookingDto nextBooking;
+    private List<CommentDto> comments;
 }
