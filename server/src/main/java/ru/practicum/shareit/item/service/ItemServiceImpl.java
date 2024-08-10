@@ -57,14 +57,33 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public Collection<ItemBookingDto> getAllByUser(Long userId) {
-        return itemRepository.findByUserId(userId).stream()
-                .map(item -> get(item.getId(), userId))
-                .collect(Collectors.toList());
+        List<Item> items = itemRepository.findAllByOwnerId(userId);
+        List<Long> itemIds = items.stream().map(Item::getId).collect(Collectors.toList());
+
+        Map<Long, List<Booking>> lastBookingsMap = bookingRepository.findAllByItemIdIn(itemIds)
+                .stream().collect(Collectors.groupingBy(booking -> booking.getItem().getId()));
+        Map<Long, List<Booking>> upcomingBookingsMap = bookingRepository.findAllByItemIdIn(itemIds)
+                .stream().collect(Collectors.groupingBy(booking -> booking.getItem().getId()));
+        Map<Long, List<Comment>> commentsMap = commentRepository.findAllByItemIdIn(itemIds)
+                .stream().collect(Collectors.groupingBy(comment -> comment.getItem().getId()));
+
+        return items.stream().map(item -> {
+            Long itemId = item.getId();
+            BookingDto lastBooking = lastBookingsMap.getOrDefault(itemId, Collections.emptyList()).isEmpty() ? null :
+                    bookingMapper.toBookingDto(lastBookingsMap.get(itemId).getFirst());
+            BookingDto nextBooking = upcomingBookingsMap.getOrDefault(itemId, Collections.emptyList()).isEmpty() ? null :
+                    bookingMapper.toBookingDto(upcomingBookingsMap.get(itemId).getFirst());
+            List<CommentDto> comments = commentsMap.getOrDefault(itemId, Collections.emptyList())
+                    .stream().map(commentMapper::toCommentDto).collect(Collectors.toList());
+
+            return itemMapper.toItemBookingDto(item, lastBooking, nextBooking, userId, comments);
+        }).collect(Collectors.toList());
     }
+
 
     public Collection<ItemDto> search(String text) {
         if (text.isEmpty()) return Collections.emptyList();
-        return itemRepository.search(text).stream()
+        return itemRepository.searchAllByTextInNameOrDescription(text).stream()
                 .map(itemMapper::toItemDto)
                 .collect(Collectors.toList());
     }
@@ -72,7 +91,13 @@ public class ItemServiceImpl implements ItemService {
     @Transactional
     public ItemDto create(ItemDto itemDto, Long userId) {
         User user = findUserById(userId);
-        Item item = itemMapper.toItem(itemDto, user);
+        ItemRequest itemRequest = null;
+        Long requestId = itemDto.getRequestId();
+        if (requestId != null) {
+            itemRequest = itemRequestRepository.findById(requestId)
+                    .orElseThrow(() -> new NotFoundException("Не найдено запроса предмета с id: " + requestId));
+        }
+        Item item = itemMapper.toItem(itemDto, user, itemRequest);
         return itemMapper.toItemDto(itemRepository.save(item));
     }
 
