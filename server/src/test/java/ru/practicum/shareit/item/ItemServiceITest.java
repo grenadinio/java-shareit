@@ -286,7 +286,7 @@ public class ItemServiceITest {
         comment.setItem(item);
         when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
-        when(bookingRepository.findLastBookingsByItemId(anyLong())).thenReturn(List.of(booking));
+        when(bookingRepository.findCompletedBookingsByItemId(anyLong())).thenReturn(List.of(booking));
         when(commentRepository.save(any())).thenReturn(comment);
 
         CommentDto result = itemService.comment(item.getId(), user.getId(), commentDto);

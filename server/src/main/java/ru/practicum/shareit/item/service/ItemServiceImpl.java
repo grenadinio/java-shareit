@@ -135,11 +135,12 @@ public class ItemServiceImpl implements ItemService {
     public CommentDto comment(Long itemId, Long userId, CommentDto comment) {
         Item item = findItemById(itemId);
         User user = findUserById(userId);
-        List<Booking> endedBookings = bookingRepository.findLastBookingsByItemId(itemId);
+        List<Booking> endedBookings = bookingRepository.findCompletedBookingsByItemId(itemId);
         String text = comment.getText();
         if (text == null || text.isEmpty()) {
             throw new CommentException("Комментарий не может быть пустым");
         }
+        System.out.println(endedBookings);
         for (Booking booking : endedBookings) {
             if (booking.getBooker().getId().equals(userId)) {
                 return commentMapper.toCommentDto(
