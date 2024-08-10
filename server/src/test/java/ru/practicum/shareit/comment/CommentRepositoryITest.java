@@ -9,6 +9,7 @@ import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.comment.repository.CommentRepository;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -33,6 +34,9 @@ public class CommentRepositoryITest {
         newItem.setName("Item");
         newItem.setDescription("Description");
         newItem.setAvailable(true);
+        ItemRequest itemRequest = new ItemRequest();
+        itemRequest.setId(1L);
+        newItem.setRequest(itemRequest);
         Item item = itemRepository.save(newItem);
 
         Comment newComment = new Comment();

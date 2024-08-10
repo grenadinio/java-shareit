@@ -48,7 +48,7 @@ public class ItemRepositoryITest {
     @Test
     void searchItemByTextInDescription() {
         String text = "Text";
-        Item item = createItem("Name", "DescriptionText", true, user, null);
+        Item item = createItem("Name", "DescriptionText", true, user, itemRequest);
 
         List<Item> result = itemRepository.searchAllByTextInNameOrDescription(text);
         Assertions.assertNotNull(result);
@@ -60,7 +60,7 @@ public class ItemRepositoryITest {
     @Test
     void searchItemByTextInName() {
         String text = "Text";
-        Item item = createItem("NameText", "Description", true, user, null);
+        Item item = createItem("NameText", "Description", true, user, itemRequest);
 
         List<Item> result = itemRepository.searchAllByTextInNameOrDescription(text);
         Assertions.assertNotNull(result);
@@ -72,7 +72,7 @@ public class ItemRepositoryITest {
     @Test
     void searchItemByTextInDescriptionUpperCase() {
         String text = "Text";
-        Item item = createItem("Name", "DescrTEXTiption", true, user, null);
+        Item item = createItem("Name", "DescrTEXTiption", true, user, itemRequest);
 
         List<Item> result = itemRepository.searchAllByTextInNameOrDescription(text);
         Assertions.assertNotNull(result);
@@ -83,7 +83,7 @@ public class ItemRepositoryITest {
 
     @Test
     void findAllByOwnerId() {
-        Item item = createItem("Name", "Description", true, user, null);
+        Item item = createItem("Name", "Description", true, user, itemRequest);
 
         List<Item> result = itemRepository.findAllByOwnerId(user.getId());
         Assertions.assertNotNull(result);

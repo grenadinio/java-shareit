@@ -11,9 +11,12 @@ import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +30,7 @@ public class BookingRepositoryITest {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
     private Item item;
     private User booker;
@@ -36,15 +40,22 @@ public class BookingRepositoryITest {
     void setUp() {
         booker = createUser("Booker", "booker@mail.ru");
         owner = createUser("Owner", "owner@mail.ru");
-        item = createItem("Item", "Description", true, owner);
+        ItemRequest newItemRequest = new ItemRequest();
+        newItemRequest.setDescription("2345");
+        newItemRequest.setRequester(booker);
+        newItemRequest.setCreated(Instant.now());
+        ItemRequest itemRequest = itemRequestRepository.save(newItemRequest);
+
+        item = createItem("Item", "Description", true, owner, itemRequest);
     }
 
-    private Item createItem(String name, String description, boolean available, User owner) {
+    private Item createItem(String name, String description, boolean available, User owner, ItemRequest itemRequest) {
         Item item = new Item();
         item.setName(name);
         item.setDescription(description);
         item.setAvailable(available);
         item.setOwner(owner);
+        item.setRequest(itemRequest);
         return itemRepository.save(item);
     }
 
