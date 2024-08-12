@@ -30,7 +30,7 @@ services:
     image: server
     container_name: server
     ports:
-      - "9090:9090"
+      - "9080:9080"
     depends_on:
       - db
     environment:
