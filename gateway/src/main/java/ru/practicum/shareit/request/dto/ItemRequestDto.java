@@ -14,5 +14,4 @@ public class ItemRequestDto {
     private Long requesterId;
     @FutureOrPresent
     private Instant created;
-    //private List<ItemRequestingDto> items;
 }
