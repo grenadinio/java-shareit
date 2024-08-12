@@ -22,15 +22,16 @@ import java.util.Map;
 @RequestMapping("/items")
 @RequiredArgsConstructor
 public class ItemController {
+    private static final String USER_ID_HEADER = "X-Sharer-User-Id";
     private final ItemService itemService;
 
     @GetMapping("/{id}")
-    public ItemBookingDto get(@PathVariable Long id, @RequestHeader(value = "X-Sharer-User-Id") Long userId) {
+    public ItemBookingDto get(@PathVariable Long id, @RequestHeader(USER_ID_HEADER) Long userId) {
         return itemService.get(id, userId);
     }
 
     @GetMapping
-    public Collection<ItemBookingDto> getAllByUser(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public Collection<ItemBookingDto> getAllByUser(@RequestHeader(USER_ID_HEADER) Long userId) {
         return itemService.getAllByUser(userId);
     }
 
@@ -40,19 +41,19 @@ public class ItemController {
     }
 
     @PostMapping
-    public ItemDto create(@RequestBody ItemDto item, @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ItemDto create(@RequestBody ItemDto item, @RequestHeader(USER_ID_HEADER) Long userId) {
         return itemService.create(item, userId);
     }
 
     @PostMapping("/{itemId}/comment")
     public CommentDto comment(@PathVariable Long itemId,
-                              @RequestHeader("X-Sharer-User-Id") Long userId, @RequestBody CommentDto comment) {
+                              @RequestHeader(USER_ID_HEADER) Long userId, @RequestBody CommentDto comment) {
         return itemService.comment(itemId, userId, comment);
     }
 
     @PatchMapping("/{itemId}")
     public ItemDto edit(@PathVariable Long itemId,
-                        @RequestHeader("X-Sharer-User-Id") Long userId, @RequestBody Map<String, Object> updates) {
+                        @RequestHeader(USER_ID_HEADER) Long userId, @RequestBody Map<String, Object> updates) {
         return itemService.edit(itemId, userId, updates);
     }
 }

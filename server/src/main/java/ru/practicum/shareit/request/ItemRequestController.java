@@ -19,10 +19,11 @@ import java.util.Collection;
 @RequestMapping(path = "/requests")
 @RequiredArgsConstructor
 public class ItemRequestController {
+    private static final String USER_ID_HEADER = "X-Sharer-User-Id";
     private final ItemRequestService itemRequestService;
 
     @GetMapping
-    public Collection<ItemRequestDto> getAllSelf(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public Collection<ItemRequestDto> getAllSelf(@RequestHeader(USER_ID_HEADER) Long userId) {
         return itemRequestService.getAllSelf(userId);
     }
 
@@ -32,14 +33,14 @@ public class ItemRequestController {
     }
 
     @GetMapping("/all")
-    public Page<ItemRequestDto> getAllOthers(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public Page<ItemRequestDto> getAllOthers(@RequestHeader(USER_ID_HEADER) Long userId,
                                              @RequestParam Integer from,
                                              @RequestParam Integer size) {
         return itemRequestService.getAllOthers(userId, from, size);
     }
 
     @PostMapping
-    public ItemRequestDto create(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestBody ItemRequestDto itemRequest) {
+    public ItemRequestDto create(@RequestHeader(USER_ID_HEADER) Long userId, @RequestBody ItemRequestDto itemRequest) {
         return itemRequestService.create(userId, itemRequest);
     }
 }

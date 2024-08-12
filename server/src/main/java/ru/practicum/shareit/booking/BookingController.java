@@ -20,33 +20,34 @@ import java.util.List;
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 public class BookingController {
+    private static final String USER_ID_HEADER = "X-Sharer-User-Id";
     private final BookingService bookingService;
 
     @GetMapping("/{id}")
-    public Booking getById(@PathVariable Long id, @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public Booking getById(@PathVariable Long id, @RequestHeader(USER_ID_HEADER) Long userId) {
         return bookingService.getById(id, userId);
     }
 
     @GetMapping()
     public List<Booking> getByUser(@RequestParam(defaultValue = "ALL") String state,
-                                   @RequestHeader("X-Sharer-User-Id") Long userId) {
+                                   @RequestHeader(USER_ID_HEADER) Long userId) {
         return bookingService.getByUser(userId, state);
     }
 
     @GetMapping("/owner")
     public List<Booking> getByOwner(@RequestParam(defaultValue = "ALL") String state,
-                                    @RequestHeader("X-Sharer-User-Id") Long userId) {
+                                    @RequestHeader(USER_ID_HEADER) Long userId) {
         return bookingService.getByOwner(userId, state);
     }
 
     @PostMapping
-    public Booking create(@RequestBody BookingDto booking, @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public Booking create(@RequestBody BookingDto booking, @RequestHeader(USER_ID_HEADER) Long userId) {
         return bookingService.create(booking, userId);
     }
 
     @PatchMapping("/{id}")
     public Booking approve(@PathVariable Long id, @RequestParam boolean approved,
-                           @RequestHeader("X-Sharer-User-Id") Long userId) {
+                           @RequestHeader(USER_ID_HEADER) Long userId) {
         return bookingService.approve(id, approved, userId);
     }
 }
